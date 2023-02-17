@@ -1,0 +1,101 @@
+.bg-div {
+  /* background-color: #dee3df; */
+  background-color: #c8ebcf4f;
+
+  /*     background-image: url(https://thumbs.dreamstime.com/z/round-frame-made-green-plants-salad-leaves-herbs-white-background-decorative-backdrop-circular-border-consisted-eco-132068386.jpg); */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.form-div {
+  min-width: 320px;
+  background-color: white;
+  padding: 3% 2%;
+  border-radius: 24px;
+  box-shadow: -1px 5 20 0px rgba(161, 138, 138, 0.77);
+  -webkit-box-shadow: -1px 14px 64px 0px rgba(161, 138, 138, 0.77);
+  -moz-box-shadow: -1px 5px 20 0px rgba(161, 138, 138, 0.77);
+}
+
+.container-small {
+  margin: 5% 2%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #1d953f2e;
+}
+
+.container-small label {
+  font-size: 14px;
+  color: #1d953f69;
+}
+
+.logo-sm {
+  height: 70px;
+}
+
+h1 {
+  margin-bottom: 10%;
+  color: #1d953f;
+  text-align: center;
+  font-size: 36px;
+}
+/* 
+.free-account{
+    font-size: 24px;
+    color: #4dde76;
+}
+ */
+input {
+  border: none;
+  border-radius: 6px;
+  padding: 1%;
+  color: #1d953f;
+  background-color: transparent;
+}
+
+input:focus {
+  outline: none;
+}
+
+input ::after {
+  border: none;
+}
+
+.signupBtn {
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    #1d953f 0%,
+    #209542 20.343056921228012%,
+    #4dde76 20.343056921228012%,
+    #4dde76 100%
+  );
+  border-radius: 8px;
+  border: 0px solid #444444;
+  border-width: 0px 0px 0px 0px;
+  padding: 10px 24px 10px 50px;
+  color: #ffffff;
+  font-size: 16px;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.signupBtn :hover {
+  background-color: linear-gradient(
+    90deg,
+    #1d953f 0%,
+    #209542 20.343056921228012%,
+    #7fc493 20.343056921228012%,
+    #4dde76 100%
+  );
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
