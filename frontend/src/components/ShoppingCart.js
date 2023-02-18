@@ -100,30 +100,33 @@ const ShoppingCart = () => {
           <p>Your cart is currently empty.</p>
         ) : (
           <>
-            {cartItems.map((item) => (
-              <CartItem key={item.id}>
-                <ItemImage src={item.image} alt={item.name} />
+            {cartItems.map((product) => (
+              <CartItem key={product.id}>
+                <ItemImage src={product.image} alt={product.title} />
                 <ItemDetails>
-                  <ItemName>{item.name}</ItemName>
-                  <ItemPrice>${item.price.toFixed(2)}</ItemPrice>
+                  <ItemName>{product.title}</ItemName>
+                  <ItemPrice>${product.cost.toFixed(2)}</ItemPrice>
                   <Quantity>
-                    <QuantityButton onClick={() => decrease(item)}>
+                    <QuantityButton onClick={() => decrease(product)}>
                       -
                     </QuantityButton>
-                    {item.quantity}
-                    <QuantityButton onClick={() => increase(item)}>
+                    {product.quantity}
+                    <QuantityButton onClick={() => increase(product)}>
                       +
                     </QuantityButton>
                   </Quantity>
                   <ItemTotal>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    ${(product.price * product.quantity).toFixed(2)}
                   </ItemTotal>
                 </ItemDetails>
-                <button onClick={() => removeProduct(item)}>Remove Item</button>
+                <button onClick={() => removeProduct(product)}>
+                  Remove Item
+                </button>
               </CartItem>
             ))}
             <CartTotal>
-              Total ({itemCount} {itemCount === 1 ? "item" : "items"}): ${total}
+              Total ({itemCount} {itemCount === 1 ? "product" : "products"}): $
+              {total}
             </CartTotal>
             <CheckoutButton onClick={() => clearCart()}>
               Clear Cart

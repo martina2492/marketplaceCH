@@ -11,10 +11,10 @@ import { auth } from "../firebase";
 const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
 
   const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, user, email, password);
   };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,10 +33,8 @@ export const AuthContextProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    return () => {
-      unsubscribe();
-    };
-  });
+    return unsubscribe;
+  }, []);
 
   return (
     <UserContext.Provider

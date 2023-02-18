@@ -7,7 +7,7 @@ import { useState } from "react";
 const CommentSectionWrapper = styled.div`
   width: 100%;
   margin-top: 20px;
-  border: 1px-solid grey;
+  border: 1px solid grey;
   background-color: white;
   width: 50%;
   margin: auto;
@@ -17,7 +17,7 @@ const CommentList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 1%;
-  border: 1px-solid grey;
+  border: 1px solid grey;
   background-color: white;
   height: 100px;
   box-shadow: 2px 2px 8px #888888;
@@ -25,7 +25,7 @@ const CommentList = styled.ul`
 
 const CommentItem = styled.li`
   margin-bottom: 10px;
-  border: 1px-solid black;
+  border: 1px solid black;
   background-color: white;
   height: 25px;
 `;
@@ -35,14 +35,14 @@ const CommentAuthor = styled.p`
   font-weight: bold;
   color: #074519;
   margin: 0;
-  border: 1px-solid red;
+  border: 1px solid red;
 `;
 
 const CommentText = styled.p`
   font-size: 16px;
   color: #353839;
   margin: 0;
-  border: 1px-solid red;
+  border: 1px solid red;
 `;
 
 const CommentFormWrapper = styled.div`
@@ -56,7 +56,7 @@ const CommentForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px-solid gray;
+  border: 1px solid gray;
   background-color: white;
   box-shadow: 2px 2px 8px #888888;
 `;
@@ -75,7 +75,7 @@ const CommentTextarea = styled.textarea`
   margin: auto;
 `;
 
-const CommentSection = () => {
+const CommentSection = ({ user, productId }) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
 
@@ -85,10 +85,12 @@ const CommentSection = () => {
       return;
     }
     try {
+      const token = await user.getIdToken();
       const response = await fetch("http://localhost:8080/products", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ comment: commentText }),
       });
@@ -108,10 +110,10 @@ const CommentSection = () => {
   return (
     <CommentSectionWrapper>
       <CommentList>
-        {comments.map((comment, index) => (
-          <CommentItem key={index}>
-            <CommentAuthor>Anonymous</CommentAuthor>
-            <CommentText>{comment}</CommentText>
+        {comments.map((comment) => (
+          <CommentItem key={comment.id}>
+            <CommentAuthor>{comment.author}</CommentAuthor>
+            <CommentText>{comment.text}</CommentText>
           </CommentItem>
         ))}
       </CommentList>
