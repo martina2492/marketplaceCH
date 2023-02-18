@@ -83,19 +83,21 @@ const MenuItem = styled.div`
 const Navbar = () => {
   const { user, logout } = UserAuth();
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
 
   const handleLogout = async () => {
     try {
       await logout();
       navigate("/");
       console.log("You are logged out");
+      setCartCount(0);
     } catch (e) {
       console.log(e.message);
     }
   };
 
   const handleCartClick = () => {
-    navigate("/cart");
+    setCartCount();
   };
 
   return (
@@ -120,7 +122,9 @@ const Navbar = () => {
           </MenuItem>
           <MenuItem>
             <Badge badgeContent={4} color="success">
-              <ShoppingCartOutlinedIcon onClick={handleCartClick} />
+              <Link to="/cart">
+                <ShoppingCartOutlinedIcon onClick={handleCartClick} />
+              </Link>
             </Badge>
           </MenuItem>
           <MenuItem>

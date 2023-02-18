@@ -51,8 +51,6 @@ const ProductsList = () => {
       });
   }, []);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
   const sortProductsByCost = (order) => {
     if (order === "asc") {
       setProducts([...products].sort((a, b) => a.cost - b.cost));
@@ -69,7 +67,7 @@ const ProductsList = () => {
 
   return (
     <>
-      <Navbar products={products} />
+      <Navbar />
       <Wrapper>
         <div>
           <Filter>
@@ -86,18 +84,10 @@ const ProductsList = () => {
         </div>
         <Container>
           {products.map((product) => (
-            <Product
-              key={product.id}
-              product={product}
-              addToCart={handleAddToCart}
-              onClick={() => {
-                console.log("Clicked on product:", product);
-                setSelectedProduct(product);
-              }}
-            />
+            <Product key={product.id} product={product} />
           ))}
         </Container>
-        {selectedProduct && <ProductDetail product={selectedProduct} />}
+        <ProductDetail products={products} />
       </Wrapper>
       <Footer />
     </>
