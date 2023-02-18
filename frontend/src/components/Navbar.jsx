@@ -95,7 +95,15 @@ const Navbar = () => {
       console.log(e.message);
     }
   };
-
+  const handleSignin = async () => {
+    try {
+      await logout();
+      navigate("/signin");
+      setCartCount(0);
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
   const handleCartClick = () => {
     setCartCount();
   };
@@ -116,9 +124,15 @@ const Navbar = () => {
         </Center>
         <Right>
           <MenuItem>
-            <Button variant="text" color="success" onClick={handleLogout}>
-              LOG OUT
-            </Button>
+            {user ? (
+              <Button variant="text" color="success" onClick={handleLogout}>
+                LOG OUT
+              </Button>
+            ) : (
+              <Button variant="text" color="success" onClick={handleSignin}>
+                SIGN IN
+              </Button>
+            )}
           </MenuItem>
           <MenuItem>
             <Badge badgeContent={4} color="success">

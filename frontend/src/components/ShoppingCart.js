@@ -1,20 +1,24 @@
 import { useContext } from "react";
-import { CartContext } from "../context/cartContext";
-import Footer from "./Footer";
-import Navbar from "./Navbar";
-import Product from "./Product";
+import CartContext from "../context/CartContext";
 
 const ShoppingCart = () => {
-  const { cart } = useContext(CartContext);
-  const total = cart ? cart.reduce((acc, item) => acc + item.price, 0) : 0;
+  const { state, dispatch } = useContext(CartContext);
+
+  const removeFromCart = (product) => {
+    dispatch({ type: "REMOVE", payload: product });
+  };
 
   return (
     <div>
-      <Navbar />
       <h2>Shopping Cart</h2>
-      <p>Total: {total}</p>
-      {cart && cart.map((item) => <Product key={item.id} product={item} />)}
-      <Footer />
+      {state.length === 0 && <p>Your cart is empty.</p>}
+      {state.map((product) => (
+        <div key={product.id}>
+          <h3>{product.name}</h3>
+          <p>Price: ${product.price}</p>
+          <button onClick={() => removeFromCart(product)}>Remove</button>
+        </div>
+      ))}
     </div>
   );
 };

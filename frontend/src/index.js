@@ -4,12 +4,15 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./context/ErrorBoundary";
+import CartContextProvider from "./context/CartContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
     <ErrorBoundary>
-      <App />
+      <CartContextProvider>
+        <App />
+      </CartContextProvider>
     </ErrorBoundary>
   </BrowserRouter>
 );

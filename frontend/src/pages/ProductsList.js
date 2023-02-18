@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import Product from "../components/Product";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import ProductDetail from "./ProductDetail";
+import { CartContext } from "../context/CartContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -19,24 +19,20 @@ const Container = styled.div`
   height: 100%;
   background-color: #e9f5db;
 `;
+
 const Filter = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #e9f5db;
-  padding: 3%;
+  padding: 5%;
 `;
 
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
-  const [sortByCost, setSortByCost] = useState(null);
-
-  const handleAddToCart = (product) => {
-    setCart([...cart, product]);
-    alert("Product added to cart.");
-  };
+  const [sortByCost, setSortByCost] = useState("");
+  const cartContext = useContext(CartContext);
 
   useEffect(() => {
     fetch("http://localhost:8080/products")
@@ -51,19 +47,18 @@ const ProductsList = () => {
       });
   }, []);
 
-  const sortProductsByCost = (order) => {
-    if (order === "asc") {
-      setProducts([...products].sort((a, b) => a.cost - b.cost));
-    } else {
-      setProducts([...products].sort((a, b) => b.cost - a.cost));
-    }
-  };
-
   useEffect(() => {
+    const sortProductsByCost = (order) => {
+      if (order === "asc") {
+        setProducts([...products].sort((a, b) => a.cost - b.cost));
+      } else {
+        setProducts([...products].sort((a, b) => b.cost - a.cost));
+      }
+    };
     if (sortByCost) {
       sortProductsByCost(sortByCost);
     }
-  }, [sortByCost]);
+  }, [products, sortByCost]);
 
   return (
     <>
@@ -84,10 +79,13 @@ const ProductsList = () => {
         </div>
         <Container>
           {products.map((product) => (
-            <Product key={product.id} product={product} />
+            <Product
+              key={product.id}
+              product={product}
+              addProduct={cartContext.addProduct}
+            />
           ))}
         </Container>
-        <ProductDetail products={products} />
       </Wrapper>
       <Footer />
     </>

@@ -149,7 +149,7 @@ const Product = ({ product, addToCart }) => {
         <Link to={"/products/:id"}>
           <Button color="success">Details</Button>
         </Link>
-        <AddToCartBtn>ADD TO CART</AddToCartBtn>
+        <AddToCartBtn onClick={addToCart}>ADD TO CART</AddToCartBtn>
       </ProductHeader>
     </ProductCard>
   );

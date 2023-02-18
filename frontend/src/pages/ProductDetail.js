@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
+import CommentSection from "../components/CommentSection";
+import { Button } from "@mui/material";
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -71,81 +73,16 @@ const ProductRating = styled.div`
   color: #f8e825;
 `;
 
-const CommentSectionWrapper = styled.div`
-  width: 100%;
-  margin-top: 20px;
-`;
-
-const CommentList = styled.ul`
-  list-style: none;
-  margin: 0;
-  padding: 0;
-`;
-
-const CommentItem = styled.li`
-  margin-bottom: 10px;
-`;
-
-const CommentAuthor = styled.p`
-  font-size: 14px;
-  font-weight: bold;
-  color: #074519;
-  margin: 0;
-`;
-
-const CommentText = styled.p`
-  font-size: 16px;
-  color: #353839;
-  margin: 0;
-`;
-
-const CommentFormWrapper = styled.div`
-  margin-top: 20px;
-`;
-
-const CommentForm = styled.form`
-  display: flex;
-  flex-direction: column;
-`;
-
-const CommentTextarea = styled.textarea`
-  resize: none;
-  border-radius: 8px;
-  border: none;
-  padding: 10px;
-  margin-bottom: 10px;
-  font-size: 16px;
-  color: #353839;
-`;
-
-const CommentSubmitButton = styled.button`
-  align-self: flex-end;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  background-color: #074519;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #065014;
-  }
-`;
-
 const ProductDetail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:8080/products`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Product fetched successfully:", data);
-        setProduct(this.product);
-      })
-      .catch((error) => {
-        console.error("Error fetching product:", error);
+        const product = data.find((p) => p.id === parseInt(id));
+        setProduct(product);
       });
   }, [id]);
 
@@ -160,27 +97,17 @@ const ProductDetail = () => {
         <ProductImage src={product.image} alt={product.title} />
         <ProductDetails>
           <div>
-            <ProductTitle>{this.product.title}</ProductTitle>
+            <ProductTitle>{product.title}</ProductTitle>
             <ProductDescription>{product.description}</ProductDescription>
             <ProductCost>${product.cost}</ProductCost>
             <ProductRating>
               {product.rating} <i className="fas fa-star"></i>
             </ProductRating>
+            <Button color="success">Add to cart</Button>
           </div>
         </ProductDetails>
       </ProductWrapper>
-      <CommentSectionWrapper>
-        <CommentList>
-          <CommentItem>
-            <CommentAuthor></CommentAuthor>
-            <CommentText></CommentText>
-          </CommentItem>
-        </CommentList>
-        <CommentFormWrapper>
-          <CommentTextarea />
-          <CommentSubmitButton />
-        </CommentFormWrapper>
-      </CommentSectionWrapper>
+      <CommentSection />
       <Footer />
     </>
   );

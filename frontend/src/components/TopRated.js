@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import FastForwardIcon from "@mui/icons-material/FastForward";
 
 const TopRatedWrapper = styled.div`
   width: 60%;
@@ -71,6 +72,10 @@ const TopRated = () => {
 
     fetchTopRatedProducts();
   }, []);
+  const navigate = useNavigate();
+  const handleShop = () => {
+    navigate("/products");
+  };
 
   return (
     <>
@@ -85,8 +90,8 @@ const TopRated = () => {
             <TopRatedName>
               {product.title} - ${product.cost}
             </TopRatedName>
-            <Button color="success" variant="text">
-              <Link to="./products">Shop now</Link>
+            <Button onClick={handleShop} color="success" variant="text">
+              Shop now <FastForwardIcon />
             </Button>
           </TopRatedItem>
         ))}
