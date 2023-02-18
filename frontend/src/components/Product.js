@@ -123,6 +123,10 @@ const AddToCartBtn = styled.button`
 `;
 
 const Product = ({ product, addToCart }) => {
+  const handleClick = () => {
+    addToCart(product);
+  };
+
   return (
     <ProductCard>
       <Container>
@@ -149,7 +153,7 @@ const Product = ({ product, addToCart }) => {
         <Link to={"/products/:id"}>
           <Button color="success">Details</Button>
         </Link>
-        <AddToCartBtn onClick={addToCart}>ADD TO CART</AddToCartBtn>
+        <AddToCartBtn onClick={handleClick}>ADD TO CART</AddToCartBtn>
       </ProductHeader>
     </ProductCard>
   );
