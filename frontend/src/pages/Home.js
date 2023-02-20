@@ -5,6 +5,7 @@ import Products from "../components/Products";
 import HeroSection from "../components/HeroSection";
 import { useState } from "react";
 import { useEffect } from "react";
+import Footer from "../components/Footer";
 
 const Home = () => {
   const [products, setProducts] = useState(null);
@@ -24,8 +25,9 @@ const Home = () => {
       <Announcement />
       <Navbar />
       <HeroSection />
+      <Footer />
 
-      {products && <Products products={products} />}
+      {/*       {products && <Products products={products} />} */}
     </div>
   );
 };

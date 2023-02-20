@@ -12,26 +12,36 @@ const UserContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-
-  const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, user, email, password);
-  };
-
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const createUser = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
   const signIn = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
-    setIsLoggedIn(true);
+    return signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const logout = () => {
-    return signOut(auth);
-    setIsLoggedIn(false);
+    return signOut(auth)
+      .then(() => {
+        setIsLoggedIn(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      setIsLoggedIn(!!currentUser);
     });
     return unsubscribe;
   }, []);
@@ -45,6 +55,6 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-export const UserAuth = () => {
+export const useAuth = () => {
   return useContext(UserContext);
 };

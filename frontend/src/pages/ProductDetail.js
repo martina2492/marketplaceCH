@@ -97,8 +97,10 @@ const ProductDetail = () => {
         <ProductImage src={product.image} alt={product.title} />
         <ProductDetails>
           <div>
-            <ProductTitle>{product.title}</ProductTitle>
-            <ProductDescription>{product.description}</ProductDescription>
+            <ProductTitle>"Product title"{product.title}</ProductTitle>
+            <ProductDescription>
+              description{product.description}
+            </ProductDescription>
             <ProductCost>${product.cost}</ProductCost>
             <ProductRating>
               {product.rating} <i className="fas fa-star"></i>

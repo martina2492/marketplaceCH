@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -16,7 +17,11 @@ const Container = styled.div`
 
 const Announcement = () => {
   return (
-    <Container>Super Deal! Extra discount of 10% on Orders Over $50!</Container>
+    <Link to="/products">
+      <Container>
+        Super Deal! Extra discount of 10% on Orders Over $50!
+      </Container>
+    </Link>
   );
 };
 

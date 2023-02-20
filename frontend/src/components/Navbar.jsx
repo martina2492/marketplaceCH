@@ -4,7 +4,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
-import { UserAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
@@ -33,6 +34,9 @@ const Left = styled.div`
 const Language = styled.span`
   font-size: 14px;
   cursor: pointer;
+  @media (max-width: 800px) {
+    display: none;
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -81,7 +85,7 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = () => {
-  const { user, logout } = UserAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [cartCount, setCartCount] = useState(0);
 
