@@ -9,29 +9,16 @@ import Home from "./pages/Home";
 import ShoppingCart from "./components/ShoppingCart";
 import ProductsList from "./pages/ProductsList";
 import ProductDetail from "./pages/ProductDetail";
-import CartContext from "./context/CartContext";
+import { CartProvider } from "./context/CartContext";
 import ProductContext from "./context/productContext";
 import { productReducer, initialState } from "./context/ProductReducer";
 import { useReducer } from "react";
-import {
-  removeProduct,
-  increase,
-  decrease,
-  clearCart,
-} from "./context/CartReducer";
 
 function App() {
   const [state, dispatch] = useReducer(productReducer, initialState);
   return (
     <ProductContext.Provider value={{ state, dispatch }}>
-      <CartContext.Provider
-        value={{
-          removeProduct,
-          increase,
-          decrease,
-          clearCart,
-        }}
-      >
+      <CartProvider value={{}}>
         <div className="App">
           <AuthContextProvider>
             <Routes>
@@ -55,7 +42,7 @@ function App() {
             </Routes>
           </AuthContextProvider>
         </div>
-      </CartContext.Provider>
+      </CartProvider>
     </ProductContext.Provider>
   );
 }

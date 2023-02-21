@@ -28,6 +28,7 @@ const Filter = styled.div`
   background-color: #e9f5db;
   padding: 5%;
 `;
+
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [sortByCost, setSortByCost] = useState("");
@@ -80,8 +81,9 @@ const ProductsList = () => {
           {products.map((product) => (
             <Product
               key={product.id}
+              products={products}
               product={product}
-              addToCart={cartContext.addProduct}
+              addProduct={cartContext.addProduct}
             />
           ))}
         </Container>

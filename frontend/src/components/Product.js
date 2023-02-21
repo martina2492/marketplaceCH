@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Rating from "@mui/material/Rating";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-
+import { useContext } from "react";
+import CartContext from "../context/CartContext";
 const Info = styled.div`
   opacity: 0;
   width: 100%;
@@ -124,12 +124,18 @@ const AddToCartBtn = styled.button`
   }
 `;
 
-const Product = ({ product, addToCart }) => {
+const Product = ({ product }) => {
   const productId = product.id;
   const navigate = useNavigate();
 
   const handleClick = () => {
     navigate(`/products/${productId}`);
+  };
+
+  const { addToCart } = useContext(CartContext);
+
+  const handleAddToCart = () => {
+    addToCart(product);
   };
 
   return (
@@ -138,7 +144,7 @@ const Product = ({ product, addToCart }) => {
         <Circle />
         <Image src={product.image} alt={product.title} />
         <Info>
-          <Icon onClick={addToCart}>
+          <Icon onClick={handleAddToCart}>
             <ShoppingCartOutlined />
           </Icon>
           <Icon>

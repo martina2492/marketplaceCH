@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import CommentSection from "../components/CommentSection";
 import { Button } from "@mui/material";
 import { useContext } from "react";
+import { useParams } from "react-router-dom";
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -74,7 +75,9 @@ const ProductRating = styled.div`
 `;
 
 const ProductDetail = () => {
-  const product = useContext(ProductContext);
+  const { id } = useParams();
+  const { getProductById } = useContext(ProductContext);
+  const product = getProductById(id);
 
   return (
     <ProductContext.Provider value={product}>

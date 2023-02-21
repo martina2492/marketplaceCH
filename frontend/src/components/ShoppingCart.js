@@ -4,6 +4,7 @@ import styled from "styled-components";
 import CartContext from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Button } from "@mui/material";
 
 const ShoppingCartContainer = styled.div`
   margin: 50px auto;
@@ -28,6 +29,8 @@ const CartItemsContainer = styled.div`
 const CartItem = styled.div`
   display: flex;
   gap: 20px;
+  background-color: #e9f5db61;
+  padding: 3%;
 `;
 
 const ItemImage = styled.img`
@@ -40,8 +43,8 @@ const ItemDetails = styled.div`
   gap: 10px;
 `;
 
-const ItemName = styled.h3`
-  font-size: 1.2rem;
+const ItemName = styled.h4`
+  font-size: 0.5 rem;
 `;
 
 const ItemPrice = styled.span`
@@ -56,37 +59,18 @@ const Quantity = styled.div`
 
 const QuantityButton = styled.button`
   font-size: 1rem;
-  padding: 5px 10px;
+  padding: 2px 6px;
 `;
 
 const QuantityNumber = styled.span`
   font-size: 1.1rem;
 `;
 
-const RemoveButton = styled.button`
-  background-color: #e04f5f;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  margin: auto 0;
-`;
-
 const ButtonsContainer = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin-top: 30px;
-`;
-
-const ClearCartButton = styled.button`
-  background-color: #e04f5f;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-size: 1.2rem;
-  width: 100%;
 `;
 
 const ItemTotal = styled.h3`
@@ -96,17 +80,38 @@ const ItemTotal = styled.h3`
 const CartTotal = styled.h2`
   margin-top: 2%;
   text-align: right;
+  align-items: stretch;
 `;
 
 const CheckoutButton = styled.button`
-  background-color: #9bc400;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  cursor: pointer;
-  font-size: 1.2rem;
-  margin-top: 2%;
+  z-index: 3;
+  background: linear-gradient(
+    90deg,
+    #1d953f 0%,
+    #209542 20.343056921228012%,
+    #4dde76 20.343056921228012%,
+    #4dde76 100%
+  );
+  border-radius: 8px;
+  border: 0px solid #444444;
+  border-width: 0px 0px 0px 0px;
+  padding: 10px 24px 10px 50px;
   width: 100%;
+  margin-top: 2%;
+  color: #ffffff;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  &:hover {
+    background-color: linear-gradient(
+      90deg,
+      #1d953f 0%,
+      #209542 20.343056921228012%,
+      #7fc493 20.343056921228012%,
+      #4dde76 100%
+    );
+  }
 `;
 
 const ShoppingCart = () => {
@@ -154,38 +159,50 @@ const ShoppingCart = () => {
                   <ItemImage src={product.image} alt={product.title} />
                   <ItemDetails>
                     <ItemName>{product.title}</ItemName>
-                    <ItemPrice>${product.cost.toFixed(2)}</ItemPrice>
+                    <ItemPrice>${parseFloat(product.cost)}</ItemPrice>
                     <Quantity>
                       <QuantityButton onClick={() => handleDecrease(product)}>
                         -
                       </QuantityButton>
-                      <QuantityNumber>{product.quantity}</QuantityNumber>
+                      <QuantityNumber>
+                        ${parseFloat(product.quantity)}
+                      </QuantityNumber>
                       <QuantityButton onClick={() => handleIncrease(product)}>
                         +
                       </QuantityButton>
                     </Quantity>
                     <ItemTotal>
-                      ${(product.cost * product.quantity).toFixed(2)}
+                      ${parseFloat(product.cost)} * $
+                      {parseFloat(product.quantity)}
                     </ItemTotal>
+                    <Button
+                      variant="outlined"
+                      color="error"
+                      size="small"
+                      onClick={() => handleRemoveProduct(product)}
+                    >
+                      Remove
+                    </Button>
                   </ItemDetails>
-                  <RemoveButton onClick={() => handleRemoveProduct(product)}>
-                    Remove
-                  </RemoveButton>
                 </CartItem>
               ))}
             </CartItemsContainer>
             <CartTotal>
               Total ({itemCount} {itemCount === 1 ? "product" : "products"}): $
-              {total.toFixed(2)}
+              {total}
+              <ButtonsContainer>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={() => handleClearCart()}
+                >
+                  Clear Cart
+                </Button>
+                <Link to="/checkout">
+                  <CheckoutButton>Proceed to Checkout</CheckoutButton>
+                </Link>
+              </ButtonsContainer>
             </CartTotal>
-            <ButtonsContainer>
-              <ClearCartButton onClick={() => handleClearCart()}>
-                Clear Cart
-              </ClearCartButton>
-              <Link to="/checkout">
-                <CheckoutButton>Proceed to Checkout</CheckoutButton>
-              </Link>
-            </ButtonsContainer>
           </>
         )}
       </ShoppingCartContainer>
