@@ -159,11 +159,13 @@ const Product = ({ product }) => {
         <span>${product.cost}</span>
         <Rating
           name="product-rating"
-          value={product.rating}
+          value={parseFloat(product.rating)}
           precision={0.5}
           readOnly
         />
-        <AddToCartBtn onClick={addToCart}>ADD TO CART</AddToCartBtn>
+        <Button variant="outlined" color="success" onClick={addToCart}>
+          ADD TO CART
+        </Button>
       </ProductHeader>
     </ProductCard>
   );

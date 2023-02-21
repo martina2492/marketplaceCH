@@ -5,6 +5,8 @@ import CartContext from "../context/CartContext";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Button } from "@mui/material";
+import { useEffect } from "react";
+import { useState } from "react";
 
 const ShoppingCartContainer = styled.div`
   margin: 50px auto;
@@ -128,21 +130,70 @@ const ShoppingCart = () => {
 
   const handleRemoveProduct = (product) => {
     dispatch(removeProduct(product));
+    saveCartItems();
   };
 
   const handleIncrease = (product) => {
     dispatch(increase(product));
+    saveCartItems();
   };
 
   const handleDecrease = (product) => {
     dispatch(decrease(product));
+    saveCartItems();
   };
 
   const handleClearCart = () => {
     dispatch(clearCart());
+    saveCartItems();
   };
 
   const cartIsEmpty = cartItems.length === 0;
+
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
+
+  const checkLoggedIn = async () => {
+    try {
+      const response = await fetch("../util/validation");
+      if (response.ok) {
+        setLoggedIn(true);
+
+        retrieveCartItems();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const retrieveCartItems = async () => {
+    try {
+      const response = await fetch("../data/product");
+      if (response.ok) {
+        const items = await response.json();
+        dispatch({ type: "SET_CART_ITEMS", payload: items });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const saveCartItems = async () => {
+    if (loggedIn) {
+      try {
+        await fetch("/api/cart-items", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(cartItems),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <>
@@ -159,7 +210,10 @@ const ShoppingCart = () => {
                   <ItemImage src={product.image} alt={product.title} />
                   <ItemDetails>
                     <ItemName>{product.title}</ItemName>
-                    <ItemPrice>${parseFloat(product.cost)}</ItemPrice>
+                    <ItemPrice>
+                      <span>$</span>
+                      {parseFloat(product.cost)}
+                    </ItemPrice>
                     <Quantity>
                       <QuantityButton onClick={() => handleDecrease(product)}>
                         -
@@ -172,7 +226,7 @@ const ShoppingCart = () => {
                       </QuantityButton>
                     </Quantity>
                     <ItemTotal>
-                      ${parseFloat(product.cost)} * $
+                      {parseFloat(product.cost)} *{" "}
                       {parseFloat(product.quantity)}
                     </ItemTotal>
                     <Button

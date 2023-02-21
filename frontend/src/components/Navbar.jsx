@@ -5,6 +5,9 @@ import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useContext } from "react";
+import CartContext from "../context/CartContext";
+import { useEffect } from "react";
 
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -87,8 +90,12 @@ const MenuItem = styled.div`
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [cartCount, setCartCount] = useState(0);
+  const { itemCount } = useContext(CartContext);
+  const [cartCount, setCartCount] = useState(itemCount);
 
+  useEffect(() => {
+    setCartCount(itemCount);
+  }, [itemCount]);
   const handleLogout = async () => {
     try {
       await logout();
@@ -109,7 +116,7 @@ const Navbar = () => {
     }
   };
   const handleCartClick = () => {
-    setCartCount();
+    setCartCount(itemCount);
   };
 
   return (
@@ -139,7 +146,7 @@ const Navbar = () => {
             )}
           </MenuItem>
           <MenuItem>
-            <Badge badgeContent={4} color="success">
+            <Badge badgeContent={cartCount} color="success">
               <Link to="/cart">
                 <ShoppingCartOutlinedIcon onClick={handleCartClick} />
               </Link>
