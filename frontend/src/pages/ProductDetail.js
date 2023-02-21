@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import ProductContext from "../context/productContext";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import CommentSection from "../components/CommentSection";
 import { Button } from "@mui/material";
+import { useContext } from "react";
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -74,24 +74,10 @@ const ProductRating = styled.div`
 `;
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const [product, setProduct] = useState([]);
-
-  useEffect(() => {
-    fetch(`http://localhost:8080/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        const product = data.find((p) => p.id === parseInt(id));
-        setProduct(product);
-      });
-  }, [id]);
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
+  const product = useContext(ProductContext);
 
   return (
-    <>
+    <ProductContext.Provider value={product}>
       <Navbar />
       <ProductWrapper>
         <ProductImage src={product.image} alt={product.title} />
@@ -111,7 +97,7 @@ const ProductDetail = () => {
       </ProductWrapper>
       <CommentSection />
       <Footer />
-    </>
+    </ProductContext.Provider>
   );
 };
 

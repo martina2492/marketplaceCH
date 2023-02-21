@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import SendIcon from "@mui/icons-material/Send";
 import { useState } from "react";
+import { useEffect } from "react";
 
 const CommentSectionWrapper = styled.div`
   width: 100%;
@@ -76,35 +77,38 @@ const CommentTextarea = styled.textarea`
 `;
 
 const CommentSection = ({ user, productId }) => {
-  const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
 
-  const handleCommentSubmit = async (event) => {
+  useEffect(() => {
+    fetch(`/api/comments/${productId}`)
+      .then((response) => response.json())
+      .then((data) => setComments(data))
+      .catch((error) => console.error(error));
+  }, [productId]);
+
+  const handleCommentSubmit = (event) => {
     event.preventDefault();
     if (!commentText) {
       return;
     }
-    try {
-      const token = await user.getIdToken();
-      const response = await fetch("http://localhost:8080/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ comment: commentText }),
-      });
-      if (response.ok) {
-        // add new comment to the comments array
-        setComments([...comments, commentText]);
-        // clear the comment text
+    const newComment = {
+      author: user.name,
+      text: commentText,
+    };
+    fetch(`http://localhost:8080/products/${productId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newComment),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setComments([...comments, data]);
         setCommentText("");
-      } else {
-        console.error("Failed to post comment");
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch((error) => console.error(error));
   };
 
   return (

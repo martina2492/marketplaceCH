@@ -26,8 +26,6 @@ const Home = () => {
       <Navbar />
       <HeroSection />
       <Footer />
-
-      {/*       {products && <Products products={products} />} */}
     </div>
   );
 };

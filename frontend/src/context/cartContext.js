@@ -1,60 +1,36 @@
 import React, { createContext, useReducer } from "react";
-import { CartReducer, sumItems } from "./CartReducer";
+import CartReducer, { increase, decrease, clearCart } from "./CartReducer";
 
-export const CartContext = createContext();
-
-const storage = localStorage.getItem("cart")
-  ? JSON.parse(localStorage.getItem("cart"))
-  : [];
 const initialState = {
-  cartItems: storage,
-  ...sumItems(storage),
-  checkout: false,
+  cartItems: [],
+  itemCount: 0,
+  total: 0,
 };
 
-const CartContextProvider = ({ children }) => {
+const CartContext = createContext(initialState);
+
+export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(CartReducer, initialState);
 
-  const increase = (payload) => {
-    dispatch({ type: "INCREASE", payload });
-  };
-
-  const decrease = (payload) => {
-    dispatch({ type: "DECREASE", payload });
-  };
-
-  const addProduct = (payload) => {
-    dispatch({ type: "ADD_ITEM", payload });
-  };
-
-  const removeProduct = (payload) => {
-    dispatch({ type: "REMOVE_ITEM", payload });
-  };
-
-  const clearCart = () => {
-    dispatch({ type: "CLEAR" });
-  };
-
-  const handleCheckout = () => {
-    console.log("CHECKOUT", state);
-    dispatch({ type: "CHECKOUT" });
-  };
-
-  const contextValues = {
-    removeProduct,
-    addProduct,
-    increase,
-    decrease,
-    clearCart,
-    handleCheckout,
-    ...state,
+  const addItem = (product) => {
+    dispatch({ type: "ADD_PRODUCT", payload: product });
   };
 
   return (
-    <CartContext.Provider value={contextValues}>
+    <CartContext.Provider
+      value={{
+        cartItems: state.cartItems,
+        itemCount: state.itemCount,
+        total: state.total,
+        addItem,
+        increase: (product) => increase(dispatch, product),
+        decrease: (product) => decrease(dispatch, product),
+        clearCart: () => clearCart(dispatch),
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
 };
 
-export default CartContextProvider;
+export default CartContext;

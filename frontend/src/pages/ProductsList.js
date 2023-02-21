@@ -3,7 +3,7 @@ import Product from "../components/Product";
 import { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { CartContext } from "../context/CartContext";
+import CartContext from "../context/CartContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -28,7 +28,6 @@ const Filter = styled.div`
   background-color: #e9f5db;
   padding: 5%;
 `;
-
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [sortByCost, setSortByCost] = useState("");
@@ -82,7 +81,7 @@ const ProductsList = () => {
             <Product
               key={product.id}
               product={product}
-              addProduct={cartContext.addProduct}
+              addToCart={cartContext.addProduct}
             />
           ))}
         </Container>

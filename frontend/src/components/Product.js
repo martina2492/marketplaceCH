@@ -3,6 +3,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import styled from "styled-components";
 import Rating from "@mui/material/Rating";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Info = styled.div`
@@ -40,7 +41,8 @@ const ProductHeader = styled.div`
   display: flex;
   width: 70%;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   padding: 2% 4%;
 
   @media (max-width: 768px) {
@@ -123,6 +125,13 @@ const AddToCartBtn = styled.button`
 `;
 
 const Product = ({ product, addToCart }) => {
+  const productId = product.id;
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/products/${productId}`);
+  };
+
   return (
     <ProductCard>
       <Container>
@@ -138,7 +147,9 @@ const Product = ({ product, addToCart }) => {
         </Info>
       </Container>
       <ProductHeader>
-        <h4>{product.title}</h4>
+        <Button color="success" onClick={handleClick}>
+          {product.title}
+        </Button>
         <span>${product.cost}</span>
         <Rating
           name="product-rating"
@@ -146,9 +157,6 @@ const Product = ({ product, addToCart }) => {
           precision={0.5}
           readOnly
         />
-        <Link to={`/products/${product.id}`} key={product.id}>
-          <Button color="success">Details</Button>
-        </Link>
         <AddToCartBtn onClick={addToCart}>ADD TO CART</AddToCartBtn>
       </ProductHeader>
     </ProductCard>
