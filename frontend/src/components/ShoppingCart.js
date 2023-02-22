@@ -119,33 +119,47 @@ const CheckoutButton = styled.button`
 const ShoppingCart = () => {
   const {
     cartItems,
-    itemCount,
-    total,
-    dispatch,
-    removeProduct,
+    clearCart,
+    removeFromCart,
     increase,
     decrease,
-    clearCart,
+    getCartTotal,
+    getCartItemCount,
   } = useContext(CartContext);
 
+  const total = getCartTotal();
+  const itemCount = getCartItemCount();
+
   const handleRemoveProduct = (product) => {
-    dispatch(removeProduct(product));
+    // use removeFromCart instead if defined in CartProvider
+    removeFromCart(product.id);
     saveCartItems();
+    getCartItemCount(itemCount);
+    getCartTotal(total);
   };
 
   const handleIncrease = (product) => {
-    dispatch(increase(product));
+    // use increase instead if defined in CartProvider
+    increase(product.id);
     saveCartItems();
+    getCartItemCount(itemCount);
+    getCartTotal(total);
   };
 
   const handleDecrease = (product) => {
-    dispatch(decrease(product));
+    // use decrease instead if defined in CartProvider
+    decrease(product.id);
     saveCartItems();
+    getCartItemCount(itemCount);
+    getCartTotal(total);
   };
 
   const handleClearCart = () => {
-    dispatch(clearCart());
+    // use clearCart instead if defined in CartProvider
+    clearCart();
     saveCartItems();
+    getCartItemCount(itemCount);
+    getCartTotal(total);
   };
 
   const cartIsEmpty = cartItems.length === 0;
@@ -173,8 +187,6 @@ const ShoppingCart = () => {
     try {
       const response = await fetch("../data/product");
       if (response.ok) {
-        const items = await response.json();
-        dispatch({ type: "SET_CART_ITEMS", payload: items });
       }
     } catch (error) {
       console.error(error);
@@ -212,23 +224,18 @@ const ShoppingCart = () => {
                     <ItemName>{product.title}</ItemName>
                     <ItemPrice>
                       <span>$</span>
-                      {parseFloat(product.cost)}
+                      {product.cost}
                     </ItemPrice>
                     <Quantity>
                       <QuantityButton onClick={() => handleDecrease(product)}>
                         -
                       </QuantityButton>
-                      <QuantityNumber>
-                        ${parseFloat(product.quantity)}
-                      </QuantityNumber>
+                      <QuantityNumber>{product.quantity}</QuantityNumber>
                       <QuantityButton onClick={() => handleIncrease(product)}>
                         +
                       </QuantityButton>
                     </Quantity>
-                    <ItemTotal>
-                      {parseFloat(product.cost)} *{" "}
-                      {parseFloat(product.quantity)}
-                    </ItemTotal>
+                    <ItemTotal>{product.cost * product.quantity}</ItemTotal>
                     <Button
                       variant="outlined"
                       color="error"
@@ -242,7 +249,7 @@ const ShoppingCart = () => {
               ))}
             </CartItemsContainer>
             <CartTotal>
-              Total ({itemCount} {itemCount === 1 ? "product" : "products"}): $
+              Total {itemCount} {itemCount === 1 ? "product" : "products"}: $
               {total}
               <ButtonsContainer>
                 <Button

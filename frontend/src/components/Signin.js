@@ -49,7 +49,7 @@ const Signin = () => {
         </p>
         <div className="bottom">
           <div>
-            <Link to="/home">
+            <Link to="/">
               {" "}
               <img
                 className="logo-sm"

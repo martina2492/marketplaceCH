@@ -35,7 +35,7 @@ const Products = () => {
       <Navbar />
       <Container>
         {products.map((product) => (
-          <Product key={product.index} product={product} />
+          <Product key={product.index} id={product.id} product={product} />
         ))}
       </Container>
       <Footer />

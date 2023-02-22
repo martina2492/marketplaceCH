@@ -1,61 +1,44 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
+import cartReducer from "./CartReducer";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [state, dispatch] = useReducer(cartReducer, { cartItems: [] });
 
   const addToCart = (product) => {
-    setCartItems((prevCartItems) => [...prevCartItems, product]);
+    dispatch({ type: "ADD_PRODUCT", payload: product });
   };
 
   const removeFromCart = (productId) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((product) => product.id !== productId)
-    );
+    dispatch({ type: "REMOVE_PRODUCT", payload: { id: productId } });
   };
 
   const clearCart = () => {
-    setCartItems([]);
+    dispatch({ type: "CLEAR_CART" });
   };
 
   const increase = (productId) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems.map((product) => {
-        if (product.id === productId) {
-          return { ...product, quantity: product.quantity + 1 };
-        }
-        return product;
-      })
-    );
+    dispatch({ type: "INCREASE", payload: { id: productId } });
   };
 
   const decrease = (productId) => {
-    setCartItems((prevCartItems) =>
-      prevCartItems
-        .map((product) => {
-          if (product.id === productId) {
-            return { ...product, quantity: product.quantity - 1 };
-          }
-          return product;
-        })
-        .filter((product) => product.quantity > 0)
-    );
+    dispatch({ type: "DECREASE", payload: { id: productId } });
   };
 
   const getCartItemCount = () => {
-    return cartItems.reduce((acc, product) => acc + product.quantity, 0);
+    return state.cartItems.reduce((acc, product) => acc + product.quantity, 0);
   };
 
   const getCartTotal = () => {
-    return cartItems.reduce(
+    return state.cartItems.reduce(
       (acc, product) => acc + product.quantity * product.cost,
       0
     );
   };
 
   const values = {
-    cartItems,
+    cartItems: state.cartItems,
     addToCart,
     removeFromCart,
     clearCart,

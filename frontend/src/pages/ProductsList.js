@@ -83,6 +83,7 @@ const ProductsList = () => {
               key={product.id}
               products={products}
               product={product}
+              id={product.id}
               addProduct={cartContext.addProduct}
             />
           ))}

@@ -127,12 +127,11 @@ const AddToCartBtn = styled.button`
 const Product = ({ product }) => {
   const productId = product.id;
   const navigate = useNavigate();
+  const { addToCart } = useContext(CartContext);
 
   const handleClick = () => {
     navigate(`/products/${productId}`);
   };
-
-  const { addToCart } = useContext(CartContext);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -163,7 +162,7 @@ const Product = ({ product }) => {
           precision={0.5}
           readOnly
         />
-        <Button variant="outlined" color="success" onClick={addToCart}>
+        <Button variant="outlined" color="success" onClick={handleAddToCart}>
           ADD TO CART
         </Button>
       </ProductHeader>

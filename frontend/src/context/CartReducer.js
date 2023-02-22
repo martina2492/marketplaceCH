@@ -1,81 +1,73 @@
-const Storage = (cartItems) => {
-  localStorage.setItem(
-    "cart",
-    JSON.stringify(cartItems.length > 0 ? cartItems : [])
-  );
-};
-
-export const sumItems = (cartItems) => {
-  Storage(cartItems);
-  let itemCount = cartItems.reduce(
-    (total, product) => total + product.quantity,
-    0
-  );
-  let total = cartItems
-    .reduce((total, product) => total + product.price * product.quantity, 0)
-    .toFixed(2);
-  return { itemCount, total };
-};
-
-export const CartReducer = (state, action) => {
+const cartReducer = (state, action) => {
   switch (action.type) {
-    case "ADD_ITEM":
-      if (
-        !state.cartItems.find((product) => product.id === action.payload.id)
-      ) {
-        state.cartItems.push({
-          ...action.payload,
-          quantity: 1,
-        });
-      }
-
-      return {
-        ...state,
-        ...sumItems(state.cartItems),
-        cartItems: [...state.cartItems],
-      };
-    case "REMOVE_ITEM":
-      return {
-        ...state,
-        ...sumItems(
-          state.cartItems.filter((product) => product.id !== action.payload.id)
-        ),
-        cartItems: [
-          ...state.cartItems.filter(
-            (product) => product.id !== action.payload.id
+    case "SET_CART_ITEMS":
+      return { ...state, cartItems: action.payload };
+    case "ADD_PRODUCT": {
+      const existingItem = state.cartItems.find(
+        (product) => product.id === action.payload.id
+      );
+      if (existingItem) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map((product) =>
+            product.id === action.payload.id
+              ? { ...product, quantity: product.quantity + 1 }
+              : product
           ),
-        ],
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: [...state.cartItems, { ...action.payload, quantity: 1 }],
+        };
+      }
+    }
+    case "REMOVE_PRODUCT":
+      return {
+        ...state,
+        cartItems: state.cartItems.filter(
+          (product) => product.id !== action.payload.id
+        ),
       };
     case "INCREASE":
-      state.cartItems[
-        state.cartItems.findIndex((product) => product.id === action.payload.id)
-      ].quantity++;
       return {
         ...state,
-        ...sumItems(state.cartItems),
-        cartItems: [...state.cartItems],
+        cartItems: state.cartItems.map((product) =>
+          product.id === action.payload.id
+            ? { ...product, quantity: product.quantity + 1 }
+            : product
+        ),
       };
-    case "DECREASE":
-      state.cartItems[
-        state.cartItems.findIndex((product) => product.id === action.payload.id)
-      ].quantity--;
+    case "DECREASE": {
+      const existingItem = state.cartItems.find(
+        (product) => product.id === action.payload.id
+      );
+      if (existingItem.quantity > 1) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map((product) =>
+            product.id === action.payload.id
+              ? { ...product, quantity: product.quantity - 1 }
+              : product
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: state.cartItems.filter(
+            (product) => product.id !== action.payload.id
+          ),
+        };
+      }
+    }
+    case "CLEAR_CART":
       return {
         ...state,
-        ...sumItems(state.cartItems),
-        cartItems: [...state.cartItems],
-      };
-    case "CHECKOUT":
-      return {
         cartItems: [],
-        checkout: true,
-        ...sumItems([]),
-      };
-    case "CLEAR":
-      return {
-        cartItems: [],
-        ...sumItems([]),
       };
     default:
       return state;
   }
 };
+
+export default cartReducer;
