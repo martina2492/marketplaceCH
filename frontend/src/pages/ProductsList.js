@@ -4,6 +4,8 @@ import { useState, useEffect, useContext } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CartContext from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
+import ProductContext from "../context/productContext";
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,6 +34,9 @@ const Filter = styled.div`
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [sortByCost, setSortByCost] = useState("");
+  const { setSelectedProduct } = useContext(ProductContext);
+  const navigate = useNavigate();
+
   const cartContext = useContext(CartContext);
 
   useEffect(() => {
@@ -60,6 +65,11 @@ const ProductsList = () => {
     }
   }, [products, sortByCost]);
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    navigate(`/products/${product.id}`);
+  };
+
   return (
     <>
       <Navbar />
@@ -85,6 +95,7 @@ const ProductsList = () => {
               product={product}
               id={product.id}
               addProduct={cartContext.addProduct}
+              onClick={() => handleProductClick(product)}
             />
           ))}
         </Container>

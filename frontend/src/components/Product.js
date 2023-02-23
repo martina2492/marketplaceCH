@@ -6,6 +6,8 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import CartContext from "../context/CartContext";
+import ProductContext from "../context/productContext";
+
 const Info = styled.div`
   opacity: 0;
   width: 100%;
@@ -127,14 +129,15 @@ const AddToCartBtn = styled.button`
 const Product = ({ product }) => {
   const productId = product.id;
   const navigate = useNavigate();
+  const { setSelectedProduct } = useContext(ProductContext);
   const { addToCart } = useContext(CartContext);
-
-  const handleClick = () => {
-    navigate(`/products/${productId}`);
-  };
 
   const handleAddToCart = () => {
     addToCart(product);
+  };
+
+  const handleClickDetails = () => {
+    navigate(`/products/${product.id}`, { state: { product: product } });
   };
 
   return (
@@ -152,7 +155,7 @@ const Product = ({ product }) => {
         </Info>
       </Container>
       <ProductHeader>
-        <Button color="success" onClick={handleClick}>
+        <Button color="success" onClick={handleClickDetails}>
           {product.title}
         </Button>
         <span>${product.cost}</span>

@@ -1,11 +1,10 @@
-import ProductContext from "../context/productContext";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import CommentSection from "../components/CommentSection";
 import { Button } from "@mui/material";
-import { useContext } from "react";
-import { useParams } from "react-router-dom";
+
+import { useLocation } from "react-router-dom";
 
 const ProductWrapper = styled.div`
   display: flex;
@@ -75,12 +74,10 @@ const ProductRating = styled.div`
 `;
 
 const ProductDetail = () => {
-  const { id } = useParams();
-  const { getProductById } = useContext(ProductContext);
-  const product = getProductById(id);
-
+  const location = useLocation();
+  const product = location.state.product;
   return (
-    <ProductContext.Provider value={product}>
+    <>
       <Navbar />
       <ProductWrapper>
         <ProductImage src={product.image} alt={product.title} />
@@ -100,7 +97,7 @@ const ProductDetail = () => {
       </ProductWrapper>
       <CommentSection />
       <Footer />
-    </ProductContext.Provider>
+    </>
   );
 };
 

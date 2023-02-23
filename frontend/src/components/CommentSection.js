@@ -93,7 +93,7 @@ const CommentSection = ({ user, productId }) => {
       return;
     }
     const newComment = {
-      author: user.name,
+      author: user.email,
       text: commentText,
     };
     fetch(`http://localhost:8080/products/${productId}`, {
