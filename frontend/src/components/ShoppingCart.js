@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartContext from "../context/CartContext";
 import Navbar from "../components/Navbar";
@@ -129,6 +129,7 @@ const ShoppingCart = () => {
 
   const total = getCartTotal();
   const itemCount = getCartItemCount();
+  const navigate = useNavigate();
 
   const handleRemoveProduct = (product) => {
     // use removeFromCart instead if defined in CartProvider
@@ -192,7 +193,9 @@ const ShoppingCart = () => {
       console.error(error);
     }
   };
-
+  const handleCheckout = () => {
+    navigate(`/checkout`);
+  };
   const saveCartItems = async () => {
     if (loggedIn) {
       try {
@@ -260,7 +263,9 @@ const ShoppingCart = () => {
                   Clear Cart
                 </Button>
                 <Link to="/checkout">
-                  <CheckoutButton>Proceed to Checkout</CheckoutButton>
+                  <CheckoutButton onClick={handleCheckout}>
+                    Proceed to Checkout
+                  </CheckoutButton>
                 </Link>
               </ButtonsContainer>
             </CartTotal>

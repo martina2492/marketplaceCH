@@ -34,22 +34,32 @@ const Filter = styled.div`
 const ProductsList = () => {
   const [products, setProducts] = useState([]);
   const [sortByCost, setSortByCost] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const { setSelectedProduct } = useContext(ProductContext);
   const navigate = useNavigate();
 
   const cartContext = useContext(CartContext);
 
-  useEffect(() => {
+  const fetchProducts = () => {
     fetch("http://localhost:8080/products")
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         setProducts(data.products);
       })
       .catch((e) => {
         console.error(`An error occurred: ${e}`);
       });
+  };
+
+  const filteredProducts = (productsToFilter) => {
+    return productsToFilter.filter(
+      (product) =>
+        product.title.toLowerCase().indexOf(searchQuery.toLowerCase()) !== -1
+    );
+  };
+
+  useEffect(() => {
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -69,10 +79,12 @@ const ProductsList = () => {
     setSelectedProduct(product);
     navigate(`/products/${product.id}`);
   };
-
   return (
     <>
-      <Navbar />
+      <Navbar
+        searchQuery={searchQuery}
+        setSearchQuery={(query) => setSearchQuery(query)}
+      />
       <Wrapper>
         <div>
           <Filter>
@@ -88,10 +100,10 @@ const ProductsList = () => {
           </Filter>
         </div>
         <Container>
-          {products.map((product) => (
+          {filteredProducts(products).map((product) => (
             <Product
               key={product.id}
-              products={products}
+              products={filteredProducts}
               product={product}
               id={product.id}
               addProduct={cartContext.addProduct}

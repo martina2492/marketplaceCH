@@ -30,12 +30,18 @@ const Wrapper = styled.div`
   background-color: ${(props) =>
     props.themeMode === "light" ? "white" : "#222"};
   color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 `;
 
 const Left = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 /* const Language = styled.span`
@@ -73,6 +79,10 @@ const Center = styled.div`
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  @media (max-width: 768px) {
+    flex: 2;
+    padding-top: 3%;
+  }
 `;
 
 const Logo = styled.img`
@@ -84,6 +94,10 @@ const Right = styled.div`
   flex: 1;
   align-items: center;
   justify-content: flex-end;
+  @media (max-width: 768px) {
+    flex: 3;
+    padding-top: 3%;
+  }
 `;
 
 const MenuItem = styled.div`
@@ -93,16 +107,23 @@ const MenuItem = styled.div`
   background-color: transparent;
 `;
 
-const Navbar = () => {
+const Navbar = ({ searchQuery, setSearchQuery }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { itemCount } = useContext(CartContext);
   const [cartCount, setCartCount] = useState(itemCount);
   const { themeMode, toggleTheme } = useContext(ThemeContext);
 
+  const { cartItems } = useContext(CartContext);
+  const totalItems = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
+
   useEffect(() => {
     setCartCount(itemCount);
   }, [itemCount]);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -136,7 +157,11 @@ const Navbar = () => {
         </Left>
         <Center>
           <SearchContainer>
-            <Input themeMode={themeMode} />
+            <Input
+              themeMode={themeMode}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchQuery}
+            />
             <SearchIcon style={{ color: "gray", fontSize: 18 }} />
           </SearchContainer>
         </Center>
@@ -153,7 +178,7 @@ const Navbar = () => {
             )}
           </MenuItem>
           <MenuItem>
-            <Badge badgeContent={cartCount} color="success">
+            <Badge badgeContent={totalItems} color="success">
               <Link to="/cart">
                 <ShoppingCartOutlinedIcon onClick={handleCartClick} />
               </Link>

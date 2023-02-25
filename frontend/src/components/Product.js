@@ -33,6 +33,11 @@ const ProductCard = styled.div`
   height: 25vh;
   max-width: 350px;
 
+  &:hover {
+    transform: scale(1.01);
+    transition: all 0.3s ease-in-out;
+  }
+
   @media (max-width: 768px) {
     flex-direction: column;
     height: 50vh;
@@ -49,6 +54,7 @@ const ProductHeader = styled.div`
 
   @media (max-width: 768px) {
     padding: 2%;
+    width: 100%;
   }
 `;
 

@@ -17,12 +17,13 @@ const TopRatedWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-around;
   margin: auto;
-  margin-bottom: 3%;
+  padding-bottom: 3%;
 
   @media (max-width: 768px) {
     width: 100%;
     justify-content: center;
     margin-top: 5%;
+    flex-direction: column;
   }
 `;
 
@@ -36,6 +37,14 @@ const TopRatedItem = styled.div`
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
   padding: 1% 5%;
   margin-bottom: 4%;
+  &:hover {
+    transform: scale(1.01);
+    transition: all 0.3s ease-in-out;
+  }
+  @media (max-width: 768px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 const TopRatedImage = styled.img`
@@ -58,6 +67,26 @@ const TopRatedRating = styled.div`
   align-items: center;
   font-size: 18px;
   color: #f8e825;
+`;
+
+const SectionTitle = styled.h2`
+  color: #074519ad;
+  text-align: center;
+  position: relative;
+  padding: 2% 0;
+  font-size: 1.5em;
+  font-weight: 400;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background-color: #074519ad;
+  }
 `;
 
 const TopRated = () => {
@@ -87,6 +116,8 @@ const TopRated = () => {
 
   return (
     <Wrap themeMode={themeMode}>
+      <SectionTitle>Our Top Rated Products</SectionTitle>
+
       <TopRatedWrapper>
         {topRated.map((product) => (
           <TopRatedItem key={product.id}>

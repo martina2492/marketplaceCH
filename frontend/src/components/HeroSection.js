@@ -4,15 +4,16 @@ import Testimonials from "./Testimonials";
 import { Link } from "react-router-dom";
 import TopRated from "./TopRated";
 import Farmers from "./Farmers";
+import VideoPlayer from "./Ads";
 
 const HeroSectionWrapper = styled.section`
   height: 30vh;
   display: flex;
   flex-direction: column;
-  padding: 8% 8% 2% 8%;
+  padding: 8% 8% 2% 11%;
   align-items: start;
   justify-content: center;
-  background-image: url(https://as1.ftcdn.net/v2/jpg/04/62/19/12/1000_F_462191230_CAJrFs795MeoyGZAADqcgEMs59geYxGa.jpg);
+  background-image: url(https://db535g4onu9gg.cloudfront.net/eyJidWNrZXQiOiJtZXJjYXRvLWltYWdlcyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJmaWxsIiwid2lkdGgiOjE0NDAsImhlaWdodCI6MzIyfX0sImtleSI6InN0b3JlLWltYWdlcy9LOVdoa1pYMjh0ZGlpaWNmb3ZGM3ZGNlU1VWh4Y2RaUHlOZ1BaN1Y1LmpwZyJ9);
   background-size: cover;
   background-position: center;
   position: relative;
@@ -191,10 +192,6 @@ const HeroSection = () => {
           <SeeProductsBtn>See our products</SeeProductsBtn>
         </Link>
       </HeroSectionWrapper>
-      <Farmers />
-
-      <SectionTitle>Our Top Rated Products</SectionTitle>
-
       <TopRated />
 
       <OfferWrapper>
@@ -217,7 +214,9 @@ const HeroSection = () => {
           </Offer>
         </Offers>
       </OfferWrapper>
+      {/* <VideoPlayer /> */}
       <Testimonials />
+      <Farmers />
     </div>
   );
 };
