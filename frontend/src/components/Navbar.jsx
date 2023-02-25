@@ -8,9 +8,11 @@ import { useAuth } from "../context/AuthContext";
 import { useContext } from "react";
 import CartContext from "../context/CartContext";
 import { useEffect } from "react";
-
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../theme/ThemeContext";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import NightlightIcon from "@mui/icons-material/Nightlight";
 
 const Container = styled.div`
   height: 10vh;
@@ -25,7 +27,9 @@ const Wrapper = styled.div`
   padding: 0px 20px;
   display: flex;
   justify-content: space-between;
-  background-color: transparent;
+  background-color: ${(props) =>
+    props.themeMode === "light" ? "white" : "#222"};
+  color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
 `;
 
 const Left = styled.div`
@@ -34,13 +38,13 @@ const Left = styled.div`
   align-items: center;
 `;
 
-const Language = styled.span`
+/* const Language = styled.span`
   font-size: 14px;
   cursor: pointer;
   @media (max-width: 800px) {
     display: none;
   }
-`;
+`; */
 
 const SearchContainer = styled.div`
   border: 0.5px solid green;
@@ -56,7 +60,9 @@ const SearchContainer = styled.div`
 
 const Input = styled.input`
   border: none;
-  background-color: white;
+  background-color: ${(props) =>
+    props.themeMode === "light" ? "white" : "#222"};
+  color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
   z-index: 3;
   width: 100%;
 `;
@@ -92,6 +98,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { itemCount } = useContext(CartContext);
   const [cartCount, setCartCount] = useState(itemCount);
+  const { themeMode, toggleTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     setCartCount(itemCount);
@@ -121,15 +128,15 @@ const Navbar = () => {
 
   return (
     <Container>
-      <Wrapper>
+      <Wrapper themeMode={themeMode}>
         <Left>
           <Link to="/account">
-            <Logo src="https://scontent.fmbx2-1.fna.fbcdn.net/v/t1.18169-9/22281999_10154938092665777_3117443772466335971_n.png?_nc_cat=110&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=SgbCOIAclpYAX_kc9Wa&_nc_ht=scontent.fmbx2-1.fna&oh=00_AfD_1pN_j2WgPatkcTUD_UlNyEdZMYPObuKvm6ZQ7OVG4g&oe=6410A612" />
+            <Logo src="https://logos-world.net/wp-content/uploads/2022/11/Sprouts-Farmers-Market-Logo.png" />
           </Link>
         </Left>
         <Center>
           <SearchContainer>
-            <Input />
+            <Input themeMode={themeMode} />
             <SearchIcon style={{ color: "gray", fontSize: 18 }} />
           </SearchContainer>
         </Center>
@@ -153,7 +160,9 @@ const Navbar = () => {
             </Badge>
           </MenuItem>
           <MenuItem>
-            <Language>EN</Language>
+            <IconButton onClick={toggleTheme}>
+              {themeMode === "light" ? <LightModeIcon /> : <NightlightIcon />}
+            </IconButton>
           </MenuItem>
         </Right>
       </Wrapper>

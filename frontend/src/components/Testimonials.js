@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useContext } from "react";
+import { ThemeContext } from "../theme/ThemeContext";
 
 const Testimonials = styled.div`
   display: flex;
@@ -7,6 +9,9 @@ const Testimonials = styled.div`
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+  background-color: ${(props) =>
+    props.themeMode === "light" ? "white" : "#222"};
+  color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
 `;
 
 const TestimonialsWrapper = styled.div`
@@ -119,8 +124,10 @@ const TestimonialCards = () => {
 };
 
 const TestimonialsSection = () => {
+  const { themeMode } = useContext(ThemeContext);
+
   return (
-    <Testimonials>
+    <Testimonials themeMode={themeMode}>
       <TestimonialsWrapper>
         <TestimonialCards />
       </TestimonialsWrapper>

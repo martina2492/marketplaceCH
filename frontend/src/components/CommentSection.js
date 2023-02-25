@@ -6,11 +6,9 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const CommentSectionWrapper = styled.div`
-  width: 100%;
   margin-top: 20px;
-  border: 1px solid grey;
   background-color: white;
-  width: 50%;
+  width: 100%;
   margin: auto;
 `;
 
@@ -18,15 +16,15 @@ const CommentList = styled.ul`
   list-style: none;
   margin: 0;
   padding: 1%;
-  border: 1px solid grey;
+  border: 1px solid ghostwhite;
   background-color: white;
-  height: 100px;
+
   box-shadow: 2px 2px 8px #888888;
 `;
 
 const CommentItem = styled.li`
   margin-bottom: 10px;
-  border: 1px solid black;
+  border: none;
   background-color: white;
   height: 25px;
 `;
@@ -43,7 +41,7 @@ const CommentText = styled.p`
   font-size: 16px;
   color: #353839;
   margin: 0;
-  border: 1px solid red;
+  border: 1px solid ghostwhite;
 `;
 
 const CommentFormWrapper = styled.div`
@@ -57,9 +55,8 @@ const CommentForm = styled.form`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  border: 1px solid gray;
+
   background-color: white;
-  box-shadow: 2px 2px 8px #888888;
 `;
 
 const CommentTextarea = styled.textarea`
@@ -120,20 +117,24 @@ const CommentSection = ({ user, productId }) => {
             <CommentText>{comment.text}</CommentText>
           </CommentItem>
         ))}
+        <CommentFormWrapper>
+          <CommentForm>
+            <CommentTextarea
+              placeholder="Write your comment here..."
+              value={commentText}
+              onChange={(event) => setCommentText(event.target.value)}
+            />
+            <Button
+              color="success"
+              variant="text"
+              onClick={handleCommentSubmit}
+            >
+              Comment
+              <SendIcon />
+            </Button>
+          </CommentForm>
+        </CommentFormWrapper>
       </CommentList>
-      <CommentFormWrapper>
-        <CommentForm>
-          <CommentTextarea
-            placeholder="Write your comment here..."
-            value={commentText}
-            onChange={(event) => setCommentText(event.target.value)}
-          />
-          <Button color="success" variant="text" onClick={handleCommentSubmit}>
-            Comment
-            <SendIcon />
-          </Button>
-        </CommentForm>
-      </CommentFormWrapper>
     </CommentSectionWrapper>
   );
 };

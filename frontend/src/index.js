@@ -6,16 +6,19 @@ import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./context/ErrorBoundary";
 import { CartProvider } from "./context/CartContext";
 import { AuthContextProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./theme/ThemeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <BrowserRouter>
-    <ErrorBoundary>
-      <CartProvider>
-        <AuthContextProvider>
-          <App />
-        </AuthContextProvider>
-      </CartProvider>
-    </ErrorBoundary>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <CartProvider>
+          <AuthContextProvider>
+            <App />
+          </AuthContextProvider>
+        </CartProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
   </BrowserRouter>
 );

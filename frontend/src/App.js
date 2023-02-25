@@ -13,36 +13,42 @@ import { CartProvider } from "./context/CartContext";
 import ProductContext from "./context/productContext";
 import { productReducer, initialState } from "./context/ProductReducer";
 import { useReducer } from "react";
-
+import { ThemeProvider } from "./theme/ThemeContext";
+import { useContext } from "react";
+import { ThemeContext } from "./theme/ThemeContext";
 function App() {
   const [state, dispatch] = useReducer(productReducer, initialState);
-  return (
-    <ProductContext.Provider value={{ state, dispatch }}>
-      <CartProvider value={{}}>
-        <div className="App">
-          <AuthContextProvider>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/signin" element={<Signin />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/products" element={<ProductsList />} />
-              <Route path="/cart" element={<ShoppingCart />} />
-              <Route path="/products/:id" element={<ProductDetail />} />
+  const { themeMode } = useContext(ThemeContext);
 
-              <Route
-                path="/cart"
-                element={
-                  <ProtectedRoute>
-                    <Account />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </AuthContextProvider>
-        </div>
-      </CartProvider>
-    </ProductContext.Provider>
+  return (
+    <ThemeProvider themeMode={themeMode}>
+      <ProductContext.Provider value={{ state, dispatch }}>
+        <CartProvider value={{}}>
+          <div className="App">
+            <AuthContextProvider>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/signin" element={<Signin />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/products" element={<ProductsList />} />
+                <Route path="/cart" element={<ShoppingCart />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+
+                <Route
+                  path="/cart"
+                  element={
+                    <ProtectedRoute>
+                      <Account />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </AuthContextProvider>
+          </div>
+        </CartProvider>
+      </ProductContext.Provider>
+    </ThemeProvider>
   );
 }
 

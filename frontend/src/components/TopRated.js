@@ -3,10 +3,17 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FastForwardIcon from "@mui/icons-material/FastForward";
+import { useContext } from "react";
+import { ThemeContext } from "../theme/ThemeContext";
 
+const Wrap = styled.div`
+  background-color: ${(props) =>
+    props.themeMode === "light" ? "white" : "#222"};
+  color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
+`;
 const TopRatedWrapper = styled.div`
-  width: 60%;
   display: flex;
+  width: 80%;
   flex-wrap: wrap;
   justify-content: space-around;
   margin: auto;
@@ -55,6 +62,7 @@ const TopRatedRating = styled.div`
 
 const TopRated = () => {
   const [topRated, setTopRated] = useState([]);
+  const { themeMode } = useContext(ThemeContext);
 
   useEffect(() => {
     const fetchTopRatedProducts = async () => {
@@ -78,8 +86,7 @@ const TopRated = () => {
   };
 
   return (
-    <>
-      {" "}
+    <Wrap themeMode={themeMode}>
       <TopRatedWrapper>
         {topRated.map((product) => (
           <TopRatedItem key={product.id}>
@@ -96,7 +103,7 @@ const TopRated = () => {
           </TopRatedItem>
         ))}
       </TopRatedWrapper>
-    </>
+    </Wrap>
   );
 };
 
