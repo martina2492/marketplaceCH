@@ -5,7 +5,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./context/ErrorBoundary";
 import { CartProvider } from "./context/CartContext";
-import { AuthContextProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./theme/ThemeContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -14,9 +14,9 @@ root.render(
     <ThemeProvider>
       <ErrorBoundary>
         <CartProvider>
-          <AuthContextProvider>
+          <AuthProvider>
             <App />
-          </AuthContextProvider>
+          </AuthProvider>
         </CartProvider>
       </ErrorBoundary>
     </ThemeProvider>

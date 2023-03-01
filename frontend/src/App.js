@@ -2,7 +2,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
-import { AuthContextProvider } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Account from "./pages/Account";
 import Home from "./pages/Home";
@@ -26,7 +26,7 @@ function App() {
       <ProductContext.Provider value={{ state, dispatch }}>
         <CartProvider value={{}}>
           <div className="App">
-            <AuthContextProvider>
+            <AuthProvider>
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/account" element={<Account />} />
@@ -40,13 +40,11 @@ function App() {
                 <Route
                   path="/cart"
                   element={
-                    <ProtectedRoute>
-                      <Account />
-                    </ProtectedRoute>
+                    <ProtectedRoute>{/*   <Profile /> */}</ProtectedRoute>
                   }
                 />
               </Routes>
-            </AuthContextProvider>
+            </AuthProvider>
           </div>
         </CartProvider>
       </ProductContext.Provider>

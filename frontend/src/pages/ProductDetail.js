@@ -4,8 +4,9 @@ import Navbar from "../components/Navbar";
 import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-
 import { useLocation } from "react-router-dom";
+import { AuthContext, AuthProvider } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const FlexWrapper = styled.div`
   display: flex;
@@ -115,17 +116,9 @@ const CommentItem = styled.li`
   height: 25px;
 `;
 
-const CommentAuthor = styled.p`
-  font-size: 14px;
-  font-weight: bold;
-  color: #074519;
-  margin: 0;
-  border: 1px solid red;
-`;
-
 const CommentText = styled.p`
   font-size: 16px;
-  color: #353839;
+  color: black;
   margin: 0;
   border: 1px solid ghostwhite;
 `;
@@ -167,38 +160,31 @@ const PromptMessage = styled.div`
   cursor: pointer;
 `;
 
-const WelcomeMessage = styled.div`
+/* const WelcomeMessage = styled.div`
   text-align: center;
   padding: 2rem;
   background-color: #f9f9f9;
   border-radius: 10px;
   margin-top: 2rem;
   cursor: pointer;
-`;
+`; */
 
 const ProductDetail = () => {
   const location = useLocation();
   const product = location.state.product;
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(product.comments);
   const [commentText, setCommentText] = useState("");
-  const [user, setUser] = useState(null);
   const productId = product.id;
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Fetch user information from server
-    fetch("/users/me", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-      },
-    })
+    fetch(`http://localhost:8080/products/${productId}/comments`)
       .then((response) => response.json())
-      .then((data) => setUser(data))
-      .catch((error) => console.error(error));
-
-    // Fetch comments for product from server
-    fetch(`/products/comments/${productId}`)
-      .then((response) => response.json())
-      .then((data) => setComments(data))
+      .then((data) =>
+        setComments(
+          Array.isArray(data) ? [...comments, ...data] : [...comments, data]
+        )
+      )
       .catch((error) => console.error(error));
   }, [productId]);
 
@@ -208,10 +194,9 @@ const ProductDetail = () => {
       return;
     }
     const newComment = {
-      author: user.email,
       text: commentText,
     };
-    fetch(`http://localhost:8080/products/${productId}`, {
+    fetch(`http://localhost:8080/products/${productId}/comments`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -226,9 +211,8 @@ const ProductDetail = () => {
       })
       .catch((error) => console.error(error));
   };
-
   return (
-    <>
+    <AuthProvider>
       <Navbar />
       <FlexWrapper>
         <ProductWrapper>
@@ -250,11 +234,9 @@ const ProductDetail = () => {
         <CommentSectionWrapper>
           {user ? (
             <>
-              <WelcomeMessage>Welcome, {user.name}!</WelcomeMessage>
               <CommentList>
                 {comments.map((comment) => (
-                  <CommentItem key={comment.id}>
-                    <CommentAuthor>{comment.author}</CommentAuthor>
+                  <CommentItem>
                     <CommentText>{comment.text}</CommentText>
                   </CommentItem>
                 ))}
@@ -283,7 +265,7 @@ const ProductDetail = () => {
         </CommentSectionWrapper>
       </FlexWrapper>
       <Footer />
-    </>
+    </AuthProvider>
   );
 };
 

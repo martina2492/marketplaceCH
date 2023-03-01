@@ -1,60 +1,93 @@
-import { createContext, useEffect, useState } from "react";
-import { useContext } from "react";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
-import { auth } from "../firebase";
+import { createContext, useContext, useState, useEffect } from "react";
 
-const UserContext = createContext();
+export const AuthContext = createContext({
+  isLoggedIn: false,
+  user: null,
+  login: () => {},
+  logout: () => {},
+  signup: () => {},
+});
 
-export const AuthContextProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+export function useAuth() {
+  return useContext(AuthContext);
+}
+
+export function AuthProvider(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
 
-  const createUser = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password);
-  };
-
-  const signIn = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        setIsLoggedIn(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const logout = () => {
-    return signOut(auth)
-      .then(() => {
-        setIsLoggedIn(false);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setIsLoggedIn(!!currentUser);
+  async function signup(email, password) {
+    const response = await fetch("http://localhost:8080/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
     });
-    return unsubscribe;
+
+    const data = await response.json();
+
+    if (response.ok) {
+      const authToken = data.token;
+      setIsLoggedIn(true);
+      setUser({ email });
+      localStorage.setItem("authToken", authToken);
+      alert(data.message);
+    } else {
+      alert(data.message);
+    }
+  }
+
+  async function login(email, password) {
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      const authToken = data.token;
+      setIsLoggedIn(true);
+      setUser({ email });
+      localStorage.setItem("authToken", authToken);
+      console.log("You are logged in. Welcome back!");
+      alert("You are logged in. Welcome back!");
+    } else {
+      alert(data.message);
+    }
+  }
+
+  function logout() {
+    setIsLoggedIn(false);
+    setUser(null);
+    localStorage.removeItem("authToken");
+    alert("You are logged out. See you soon!");
+  }
+
+  // Check if there is an auth token in local storage on mount
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken) {
+      // TODO: Validate the auth token on the server side
+      setIsLoggedIn(true);
+      setUser({ email: "TODO" });
+    }
   }, []);
 
   return (
-    <UserContext.Provider
-      value={{ isLoggedIn, createUser, user, logout, signIn }}
-    >
-      {children}
-    </UserContext.Provider>
+    <AuthContext.Provider
+      value={{
+        isLoggedIn,
+        user,
+        login,
+        logout,
+        signup,
+      }}
+      {...props}
+    />
   );
-};
-
-export const useAuth = () => {
-  return useContext(UserContext);
-};
+}

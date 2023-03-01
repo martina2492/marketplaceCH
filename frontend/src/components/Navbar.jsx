@@ -30,9 +30,6 @@ const Wrapper = styled.div`
   background-color: ${(props) =>
     props.themeMode === "light" ? "white" : "#222"};
   color: ${(props) => (props.themeMode === "light" ? "#222" : "white")};
-  @media (max-width: 768px) {
-    padding: 0;
-  }
 `;
 
 const Left = styled.div`
@@ -108,7 +105,7 @@ const MenuItem = styled.div`
 `;
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
-  const { user, logout } = useAuth();
+  const { isLoggedIn, user, logout } = useAuth();
   const navigate = useNavigate();
   const { itemCount } = useContext(CartContext);
   const [cartCount, setCartCount] = useState(itemCount);
@@ -167,7 +164,7 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
         </Center>
         <Right>
           <MenuItem>
-            {user ? (
+            {isLoggedIn ? (
               <Button variant="text" color="success" onClick={handleLogout}>
                 LOG OUT
               </Button>

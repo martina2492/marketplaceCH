@@ -4,7 +4,6 @@ import Testimonials from "./Testimonials";
 import { Link } from "react-router-dom";
 import TopRated from "./TopRated";
 import Farmers from "./Farmers";
-import VideoPlayer from "./Ads";
 
 const HeroSectionWrapper = styled.section`
   height: 30vh;
