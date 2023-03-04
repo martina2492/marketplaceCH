@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useLocation } from "react-router-dom";
-import { AuthContext, AuthProvider } from "../context/AuthContext";
+import { AuthProvider } from "../context/AuthContext";
 import { useAuth } from "../context/AuthContext";
 
 const FlexWrapper = styled.div`

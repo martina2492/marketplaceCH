@@ -13,6 +13,8 @@ import { Link } from "react-router-dom";
 import { ThemeContext } from "../theme/ThemeContext";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import NightlightIcon from "@mui/icons-material/Nightlight";
+import { NavLink } from "react-router-dom";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const Container = styled.div`
   height: 10vh;
@@ -40,14 +42,6 @@ const Left = styled.div`
     display: none;
   }
 `;
-
-/* const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  @media (max-width: 800px) {
-    display: none;
-  }
-`; */
 
 const SearchContainer = styled.div`
   border: 0.5px solid green;
@@ -102,6 +96,17 @@ const MenuItem = styled.div`
   cursor: pointer;
   margin-left: 25px;
   background-color: transparent;
+`;
+
+const MenuItemProfile = styled(NavLink)`
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 25px;
+  background-color: transparent;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Navbar = ({ searchQuery, setSearchQuery }) => {
@@ -177,7 +182,10 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
           <MenuItem>
             <Badge badgeContent={totalItems} color="success">
               <Link to="/cart">
-                <ShoppingCartOutlinedIcon onClick={handleCartClick} />
+                <ShoppingCartOutlinedIcon
+                  color="success"
+                  onClick={handleCartClick}
+                />
               </Link>
             </Badge>
           </MenuItem>
@@ -186,6 +194,9 @@ const Navbar = ({ searchQuery, setSearchQuery }) => {
               {themeMode === "light" ? <LightModeIcon /> : <NightlightIcon />}
             </IconButton>
           </MenuItem>
+          <MenuItemProfile to="/profile">
+            <ManageAccountsIcon color="success" />
+          </MenuItemProfile>
         </Right>
       </Wrapper>
     </Container>

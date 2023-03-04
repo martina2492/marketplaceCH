@@ -17,6 +17,7 @@ import { ThemeProvider } from "./theme/ThemeContext";
 import { useContext } from "react";
 import { ThemeContext } from "./theme/ThemeContext";
 import Checkout from "./pages/Checkout";
+import Profile from "./components/Profile";
 function App() {
   const [state, dispatch] = useReducer(productReducer, initialState);
   const { themeMode } = useContext(ThemeContext);
@@ -36,12 +37,9 @@ function App() {
                 <Route path="/cart" element={<ShoppingCart />} />
                 <Route path="/products/:id" element={<ProductDetail />} />
                 <Route path="/checkout" element={<Checkout />} />
-
                 <Route
-                  path="/cart"
-                  element={
-                    <ProtectedRoute>{/*   <Profile /> */}</ProtectedRoute>
-                  }
+                  path="/profile"
+                  element={<ProtectedRoute>{<Profile />}</ProtectedRoute>}
                 />
               </Routes>
             </AuthProvider>

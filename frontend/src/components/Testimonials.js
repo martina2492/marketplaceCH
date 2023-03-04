@@ -5,7 +5,6 @@ import { ThemeContext } from "../theme/ThemeContext";
 const Testimonials = styled.div`
   display: flex;
   flex-direction: column;
-  /*   background-color: #074519ad; */
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -23,6 +22,12 @@ const TestimonialsWrapper = styled.div`
   flex-wrap: wrap;
   align-items: stretch;
   margin-bottom: 4%;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
 `;
 
 const TestimonialCard = styled.div`

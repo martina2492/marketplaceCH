@@ -26,7 +26,7 @@ const HeroSectionWrapper = styled.section`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); // Change the opacity here
+    background-color: rgba(0, 0, 0, 0.5);
   }
   @media (max-width: 768px) {
     height: 80vh;
@@ -68,6 +68,7 @@ const SeeProductsBtn = styled.button`
 const MainHeader = styled.div`
   display: flex;
   z-index: 3;
+  color: #1d953f;
   @media (max-width: 768px) {
     flex-direction: column;
   }

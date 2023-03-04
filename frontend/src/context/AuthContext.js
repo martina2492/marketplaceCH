@@ -68,11 +68,9 @@ export function AuthProvider(props) {
     alert("You are logged out. See you soon!");
   }
 
-  // Check if there is an auth token in local storage on mount
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (authToken) {
-      // TODO: Validate the auth token on the server side
       setIsLoggedIn(true);
       setUser({ email: "TODO" });
     }

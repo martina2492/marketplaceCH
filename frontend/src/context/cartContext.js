@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import cartReducer from "./CartReducer";
+import { useContext } from "react";
 
 const CartContext = createContext();
 
@@ -52,3 +53,26 @@ export const CartProvider = ({ children }) => {
 };
 
 export default CartContext;
+
+export const useCart = () => {
+  const {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    increase,
+    decrease,
+    getCartItemCount,
+    getCartTotal,
+  } = useContext(CartContext);
+  return {
+    cartItems,
+    addToCart,
+    removeFromCart,
+    clearCart,
+    increase,
+    decrease,
+    getCartItemCount,
+    getCartTotal,
+  };
+};
